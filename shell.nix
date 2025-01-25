@@ -9,6 +9,7 @@ pkgs.mkShellNoCC {
     zls
     qemu
     helix
+    lazygit
   ];
 
 COLORTERM = "truecolor";
