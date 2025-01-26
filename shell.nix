@@ -8,6 +8,7 @@ pkgs.mkShellNoCC {
     zig
     zls
     qemu
+    llvmPackages_19.bintools
     helix
     lazygit
   ];
