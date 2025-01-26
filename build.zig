@@ -9,10 +9,11 @@ pub fn build(b: *std.Build) void {
             .os_tag = .freestanding,
             .abi = .none,
         }),
-        .optimize = .Debug,
+        .optimize = .ReleaseSmall,
         .strip = false,
     });
 
+    kernel.entry = .disabled;
     kernel.setLinkerScript(b.path("src/kernel.ld"));
 
     b.installArtifact(kernel);
