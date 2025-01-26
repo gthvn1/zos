@@ -10,6 +10,7 @@ pkgs.mkShellNoCC {
     qemu
     llvmPackages_19.bintools
     helix
+    tmux
     lazygit
   ];
 
