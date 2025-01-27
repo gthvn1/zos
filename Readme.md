@@ -6,6 +6,7 @@
 - [RISCV ratified specifications](https://riscv.org/specifications/ratified/)
 - [OpenSBI specs](https://www.scs.stanford.edu/~zyedidia/docs/riscv/riscv-sbi.pdf)
 - [Zig inline Assembly explained](https://github.com/ziglang/zig/blob/master/doc/langref/Assembly%20Syntax%20Explained.zig)
+- [Zig SHOWTIME - Zig Livecoding OS in 1k lines of Zig!](https://www.youtube.com/live/eAM9ol7W2w8?si=ppRmLGOx6j1YUsol)
 
 ## Notes
 ### RISC-V
