@@ -1,14 +1,16 @@
+const io = @import("std").io;
+
 // An ECALL is used as the control transfer instruction between the supervisor and the SEE.
 // - a7 encodes the SBI extension ID (EID),
 // - a6 encodes the SBI function ID (FID) for a given extension ID encoded in a7 for any SBI extension defined in or after SBI v0.2.
 // - All registers except a0 & a1 must be preserved across an SBI call by the callee.
 //  SBI functions must return a pair of values in a0 and a1, with a0 returning an error code. This is
 // analogous to returning the C structure
-// struct sbiret {
+// struct sbiRet {
 //   long error;
 //   long value;
 // }
-const Sbiret = struct {
+const SbiRet = struct {
     err: usize,
     val: usize,
 };
@@ -17,12 +19,26 @@ const ExtensionId = enum(u8) {
     putchar = 1,
 };
 
-pub fn putchar(ch: u8) void {
+fn putchar(ch: u8) void {
     // TODO: check the return value
     _ = call(ch, 0, 0, 0, 0, 0, 0, @intFromEnum(ExtensionId.putchar));
 }
 
-fn call(arg0: usize, arg1: usize, arg2: usize, arg3: usize, arg4: usize, arg5: usize, arg6: usize, arg7: usize) Sbiret {
+fn write_fn(context: *const anyopaque, bytes: []const u8) !usize {
+    _ = context;
+    for (bytes) |byte| {
+        putchar(byte);
+    }
+    return bytes.len;
+}
+
+// https://ziglang.org/documentation/master/std/#std.io.Reader
+pub const console = io.AnyWriter{
+    .context = undefined,
+    .writeFn = write_fn,
+};
+
+fn call(arg0: usize, arg1: usize, arg2: usize, arg3: usize, arg4: usize, arg5: usize, arg6: usize, arg7: usize) SbiRet {
     var err: usize = undefined;
     var val: usize = undefined;
 
@@ -41,7 +57,7 @@ fn call(arg0: usize, arg1: usize, arg2: usize, arg3: usize, arg4: usize, arg5: u
         : "memory"
     );
 
-    return Sbiret{
+    return SbiRet{
         .err = err,
         .val = val,
     };

@@ -13,10 +13,8 @@ export fn kernel_main() noreturn {
     const bss_slice = bss[0..bss_len];
     @memset(bss_slice, 0);
 
-    const hello = "Hello from kernel!";
-    for (hello) |c| {
-        sbi.putchar(c);
-    }
+    sbi.console.print("Hello from {s}\n", .{"kernel"}) catch {};
+    sbi.console.print("Answer to everything is {d}\n", .{30 + 12}) catch {};
 
     while (true)
         asm volatile ("wfi");
