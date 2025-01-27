@@ -1,3 +1,4 @@
+const std = @import("std");
 const sbi = @import("sbi.zig");
 
 // [*]u8 is a pointer to a slice of u8 value with unknown length
@@ -16,10 +17,15 @@ export fn kernel_main() noreturn {
     sbi.console.print("Hello from {s}\n", .{"kernel"}) catch {};
     sbi.console.print("Answer to everything is {d}\n", .{30 + 12}) catch {};
 
-    while (true)
-        asm volatile ("wfi");
+    @panic("End of Kernel reached...");
 }
 
+pub fn panic(msg: []const u8, _: ?*std.builtin.StackTrace, _: ?usize) noreturn {
+    sbi.console.print("PANIC: {s}\n", .{msg}) catch {};
+    while (true) {
+        asm volatile ("");
+    }
+}
 export fn boot() linksection(".text.boot") callconv(.Naked) void {
     asm volatile (
         \\mv sp, %[stack_top]

@@ -39,3 +39,4 @@
   - implement *ecall* to interact with **SBI**
     - print a message on console using the EID 0x01 that is putchar 
   - add a writer to be able to use print from std.io.Writer
+  - add panic function
