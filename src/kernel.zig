@@ -1,3 +1,5 @@
+const sbi = @import("sbi.zig");
+
 // [*]u8 is a pointer to a slice of u8 value with unknown length
 // ie it is just a pointer to a memory location of the first element
 // of the buffer
@@ -10,8 +12,14 @@ export fn kernel_main() noreturn {
     const bss_len = @intFromPtr(bss_end) - @intFromPtr(bss);
     const bss_slice = bss[0..bss_len];
     @memset(bss_slice, 0);
+
+    const hello = "Hello from kernel!";
+    for (hello) |c| {
+        sbi.putchar(c);
+    }
+
     while (true)
-        asm volatile ("");
+        asm volatile ("wfi");
 }
 
 export fn boot() linksection(".text.boot") callconv(.Naked) void {
